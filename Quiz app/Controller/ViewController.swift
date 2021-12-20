@@ -18,55 +18,52 @@ class ViewController: UIViewController {
                         ["2 + 3 = 5", "True"],
                         ["1 - 1 = -1", "False"]]
    
-    var questionNumber = 0
-                    
+    var quizbrain = QuizBrain()
+
+
+  
     
-    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
         
         updateUI()
+        
+      
     }
 
     @objc func updateUI(){
-    
-        questions.text = questionBank[0][0]
+        
+        questions.text = quizbrain.getQuestion()
         trueButton.backgroundColor = UIColor.clear
         falseButton.backgroundColor = UIColor.clear
         
-}
+    }
     
     @IBAction func buttonPressed(_ sender: UIButton) {
         
-        let userImput = sender.currentTitle!
         
-        if userImput == questionBank[questionNumber][1] {
-            
-            sender.backgroundColor = UIColor.green }
+        let userInput = sender.currentTitle!
         
-        else {
+        let checkAnswer = quizbrain.checkAnswer(userInput)
+        
+        if checkAnswer {
             
-            sender.backgroundColor = UIColor.red
+            sender.backgroundColor = UIColor.green
         }
         
-        if questionNumber < questionBank.count {
-            
-            questionNumber += 1
-            
-    }
-        else { questionNumber = 0
-            
-            }
-      
-        Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+
+
+        else {
+            sender.backgroundColor = UIColor.red
+        }
+       
+        quizbrain.nextQuestion()
         
-
-
-    
-    
-
+        Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+    }
 }
-}
+
 
